@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      body: const ListaTransferencias(),
-      appBar: AppBar(title: const Text("Transferências")),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
+  runApp(const BytebankApp());
+}
+
+class BytebankApp extends StatelessWidget {
+  const BytebankApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  MaterialApp(
+      home: Scaffold(
+        body: FormularioTransferencia(),
       ),
-    ),
-  ));
+    );
+  }
 }
 
 class ListaTransferencias extends StatelessWidget {
@@ -18,12 +22,19 @@ class ListaTransferencias extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ItemTransferencia(transferencia: Transferencia(100.0, 859528)),
-        ItemTransferencia(transferencia: Transferencia(300.0, 1000)),
-        ItemTransferencia(transferencia: Transferencia(500.0, 1050)),
-      ],
+    return Scaffold(
+      appBar: AppBar(title: const Text("Transferências")),
+      body: Column(
+        children: [
+          ItemTransferencia(transferencia: Transferencia(100.0, 859528)),
+          ItemTransferencia(transferencia: Transferencia(300.0, 1000)),
+          ItemTransferencia(transferencia: Transferencia(500.0, 1050)),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
@@ -50,4 +61,69 @@ class Transferencia {
   final int numeroConta;
 
   Transferencia(this.valor, this.numeroConta);
-} 
+
+
+  @override
+  String toString() {
+    return 'Transparecia{valor: $valor, numeroConta: $numeroConta}';
+  }
+}
+
+class FormularioTransferencia extends StatelessWidget {
+
+  final TextEditingController _controladorCampoNumeroConta = TextEditingController();
+  final TextEditingController _controladorCampoValor = TextEditingController();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        title: const Text("Criando Transferência"),
+      ),
+      body:  Column(
+        children: [
+            Padding(
+            padding: EdgeInsets.all(16.0),
+             child:  TextField( 
+              controller: _controladorCampoNumeroConta,
+              decoration: InputDecoration(
+                labelText: "Número da conta",
+                labelStyle: TextStyle(
+                  fontSize: 24.0
+                ),
+                hintText: "0000",
+              ),
+              keyboardType: TextInputType.number,
+             ),
+           ),
+            Padding(
+            padding: EdgeInsets.all(16.0),
+             child:  TextField( 
+              controller: _controladorCampoValor,
+              decoration: InputDecoration(
+                icon: Icon(Icons.monetization_on),
+                labelText: "Valor",
+                labelStyle: TextStyle(
+                  fontSize: 24.0
+                ),
+                hintText: "0.00",
+              ),
+              keyboardType: TextInputType.number,
+             ),
+           ),
+           ElevatedButton(
+            onPressed: () {
+              final int? numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
+              final double? valor = double.tryParse(_controladorCampoValor.text);
+              if(numeroConta != null && valor != null) {
+                final transferenciaCriada = Transferencia(valor, numeroConta);
+                debugPrint('${transferenciaCriada}');
+              }
+            }, 
+            child: const Text("Confimar"))
+        ],
+      ),
+    );
+  }
+}
