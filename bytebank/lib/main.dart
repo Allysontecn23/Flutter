@@ -85,20 +85,7 @@ class FormularioTransferencia extends StatelessWidget {
       ),
       body:  Column(
         children: [
-            Padding(
-            padding: const EdgeInsets.all(16.0),
-             child:  TextField( 
-              controller: _controladorCampoNumeroConta,
-              decoration: const InputDecoration(
-                labelText: "Número da conta",
-                labelStyle: TextStyle(
-                  fontSize: 24.0
-                ),
-                hintText: "0000",
-              ),
-              keyboardType: TextInputType.number,
-             ),
-           ),
+            
             Padding(
             padding: const EdgeInsets.all(16.0),
              child:  TextField( 
@@ -127,5 +114,30 @@ class FormularioTransferencia extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class Editor extends StatelessWidget {
+  final TextEditingController controlador;
+  final String rotulo;
+  final String dica;
+  const Editor({super.key, required this.controlador, required this.dica, required this.rotulo});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+            padding: const EdgeInsets.all(16.0),
+             child:  TextField( 
+              controller: controlador,
+              decoration:  InputDecoration(
+                labelText: rotulo,
+                labelStyle: const TextStyle(
+                  fontSize: 24.0
+                ),
+                hintText: dica,
+              ),
+              keyboardType: TextInputType.number,
+             ),
+           );
   }
 }
